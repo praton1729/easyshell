@@ -1,0 +1,21 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+PSH_RL_BUFSIZE	util.c	25;"	d	file:
+PSH_TOK_BUFSIZE	util.c	65;"	d	file:
+PSH_TOK_DELIM	util.c	66;"	d	file:
+builtin_func	psh_builtins.c	/^int (*builtin_func[]) (char **) = {$/;"	v
+builtin_str	psh_builtins.c	/^char *builtin_str[] = {$/;"	v
+main	main.c	/^int main(int argc, char **argv)$/;"	f
+psh_cd	psh_builtins.c	/^int psh_cd(char **args)$/;"	f
+psh_execute	util.c	/^int psh_execute(char **args)$/;"	f
+psh_exit	psh_builtins.c	/^int psh_exit(char **args)$/;"	f
+psh_help	psh_builtins.c	/^int psh_help(char **args)$/;"	f
+psh_launch	util.c	/^int psh_launch(char **args)$/;"	f
+psh_loop	util.c	/^void psh_loop(void)$/;"	f
+psh_num_builtins	psh_builtins.c	/^int psh_num_builtins()$/;"	f
+psh_read_line	util.c	/^char *psh_read_line(void)$/;"	f
+psh_split_line	util.c	/^char **psh_split_line(char *line)$/;"	f
