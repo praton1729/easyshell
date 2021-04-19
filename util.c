@@ -22,44 +22,23 @@
 #include <string.h>
 #include <unistd.h>
 
+#include <readline/readline.h>
+#include <readline/history.h>
+
 #define PSH_RL_BUFSIZE 1024
 
 extern int psh_num_builtins(void);
 extern char *builtin_str[];
 extern int (*builtin_func[]) (char **);
 
+char *prompt = "psh> ";
+
 char *psh_read_line(void)
 {
-	int bufsize = PSH_RL_BUFSIZE;
-	int position = 0;
-	char *buffer = malloc(sizeof(char) * bufsize);
-	int c;
-	
-	if(!buffer) {
-		fprintf(stderr, "psh: buffer allocation failure\n");
-		exit(EXIT_FAILURE);
-	}
+	char* input = readline(prompt);
+	add_history(input);
 
-	while(1) {
-		c = getchar();
-
-		if (c == EOF || c == '\n') {
-			buffer[position] = '\0';
-			return buffer;
-		} else {
-			buffer[position] = c;
-		}
-		position++;
-
-		if (position >= bufsize) {
-			bufsize += PSH_RL_BUFSIZE;
-			buffer = realloc(buffer, bufsize);
-			if (!buffer) {
-				fprintf(stderr, "psh: buffer reallocation failure\n");
-				exit(EXIT_FAILURE);
-			}
-		}
-	}
+	return input;
 }
 
 #define PSH_TOK_BUFSIZE 64
@@ -136,7 +115,6 @@ int psh_execute(char **args)
 		}
 	}
 
-	printf("Launching %s\n", args[0]);
 	return psh_launch(args);
 }
 
@@ -147,7 +125,6 @@ void psh_loop(void)
 	int status;
 
 	do {
-		printf("psh> ");
 		line = psh_read_line();
 		args = psh_split_line(line);
 		status = psh_execute(args);
