@@ -1,9 +1,6 @@
 
-#include <unistd.h>
-#include <stdlib.h>
 #include <string.h>
 #include <es_log.h>
-#include <es_builtins.h>
 #include <es_help.h>
 #include <es_version.h>
 #include <es_exit.h>
