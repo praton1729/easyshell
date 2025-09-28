@@ -5,9 +5,15 @@ project('easyshell', 'c',
   default_options: ['buildtype=release']
 )
 
+ss = import('sourceset')
+
+srcs = ss.source_set()
+
+subdir('src')
+
 executable(
   'easyshell.elf',
-  ['src/main.c', 'src/util.c', 'src/builtins.c'],
+  sources: srcs.all_sources(),
   include_directories: include_directories('include'),
   dependencies: [dependency('readline')],
   install: false
