@@ -1,7 +1,7 @@
 
 EXEC := easyshell.elf
 
-SOURCES := src/main.c src/util.c src/psh_builtins.c
+SOURCES := src/main.c src/util.c src/builtins.c
 
 LIBS := readline
 
