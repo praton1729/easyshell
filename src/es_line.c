@@ -8,7 +8,7 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
-#include <builtins.h>
+#include <es_builtins.h>
 
 #define EASYSHELL_TOK_BUFSIZE 64
 #define EASYSHELL_TOK_DELIM " \t\r\n\a"
@@ -55,27 +55,4 @@ char **easyshell_split_line(char *line)
 
 	tokens[position] = NULL;
 	return tokens;
-}
-
-void easyshell_loop(void)
-{
-	char *line;
-	char **args;
-	int status;
-
-	do {
-		line = easyshell_read_line();
-		args = easyshell_split_line(line);
-		status = easyshell_execute(args);
-
-		if (status < 0) {
-			if (strcmp(line, "") == 0) goto free_line;
-			fprintf(stderr, "cmd not found, try help\n");
-		}
-
-free_line:
-		free(line);
-		free(args);
-
-	} while(status);
 }

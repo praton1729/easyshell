@@ -1,6 +1,6 @@
 
 srcs.add(files(
-  'main.c',
-  'builtins.c',
-  'util.c'
+  'es_main.c',
+  'es_builtins.c',
+  'es_line.c'
 ))
