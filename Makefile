@@ -1,11 +1,11 @@
-EXEC= psh
-SOURCES= main.c util.c psh_builtins.c
+EXEC= psh.elf
+SOURCES= src/main.c src/util.c src/psh_builtins.c
 LIBS= readline
 
 all: $(EXEC)
 
 $(EXEC): $(SOURCES)
-	gcc  $^ -l$(LIBS) -o $@
+	gcc -I./include/ $^ -l$(LIBS) -o $@
 
 clean:
 	rm $(EXEC)
