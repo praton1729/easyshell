@@ -1,6 +1,9 @@
-EXEC= psh.elf
-SOURCES= src/main.c src/util.c src/psh_builtins.c
-LIBS= readline
+
+EXEC := easyshell.elf
+
+SOURCES := src/main.c src/util.c src/psh_builtins.c
+
+LIBS := readline
 
 all: $(EXEC)
 
