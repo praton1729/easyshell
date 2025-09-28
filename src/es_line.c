@@ -1,14 +1,12 @@
 
 #include <sys/wait.h>
 #include <stdlib.h>
-#include <stdio.h>
 #include <string.h>
 #include <unistd.h>
-
 #include <readline/readline.h>
 #include <readline/history.h>
-
 #include <es_builtins.h>
+#include <es_log.h>
 
 #define ES_TOK_BUFSIZE 64
 #define ES_TOK_DELIM " \t\r\n\a"
@@ -31,7 +29,7 @@ char **es_split_line(char *line)
 	char *token;
 
 	if(!tokens){
-		fprintf(stderr, "easyshell: tokens allocation error");
+		es_error("tokens allocation error");
 		exit(EXIT_FAILURE);
 	}
 
@@ -45,7 +43,7 @@ char **es_split_line(char *line)
 			bufsize += ES_TOK_BUFSIZE;
 			tokens = realloc(tokens, bufsize * sizeof(char*));
 			if (!tokens) {
-				fprintf(stderr, "easyshell: tokens reallocation failure\n");
+				es_error("tokens reallocation failure\n");
 				exit(EXIT_FAILURE);
 			}
 		}

@@ -1,8 +1,8 @@
 
 #include <unistd.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <es_log.h>
 
 #define version 0.1
 
@@ -29,17 +29,17 @@ int es_num_builtins()
 
 int es_version(char **args)
 {
-	fprintf(stdout, "Version info: %.1f\n", version);
+	es_print("Version info: %.1f\n", version);
 	return 1;
 }
 
 int es_help(char **args)
 {
-	fprintf(stdout, "Welcome to easyshell!\n");
-	fprintf(stdout, "The following commands are builtin:\n");
+	es_print("Easyshell, a simple bootstrappable shell\n");
+	es_print("The following commands are builtin:\n");
 
 	for(int i = 0; i < es_num_builtins(); i++) {
-		fprintf(stdout, "\t%s\n", builtin_str[i]);
+		es_print("\t%s\n", builtin_str[i]);
 	}
 
 	return 1;

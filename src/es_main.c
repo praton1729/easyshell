@@ -1,9 +1,9 @@
 
 #include <stdlib.h>
 #include <string.h>
-#include <stdio.h>
 #include <es_line.h>
 #include <es_builtins.h>
+#include <es_log.h>
 
 void es_loop(void)
 {
@@ -18,7 +18,7 @@ void es_loop(void)
 
 		if (status < 0) {
 			if (strcmp(line, "") == 0) goto free_line;
-			fprintf(stderr, "cmd not found, try help\n");
+			es_error("%s: cmd not found, try help\n", args[0]);
 		}
 
 free_line:
@@ -30,6 +30,7 @@ free_line:
 
 int main(int argc, char **argv)
 {
+	es_print("Welcome to easyshell, a simple bootstrappable shell\n");
 	es_loop();
 	return EXIT_SUCCESS;
 }
