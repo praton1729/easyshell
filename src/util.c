@@ -8,11 +8,10 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
-#define easyshell_RL_BUFSIZE 1024
+#include <builtins.h>
 
-extern int easyshell_num_builtins(void);
-extern char *builtin_str[];
-extern int (*builtin_func[]) (char **);
+#define EASYSHELL_TOK_BUFSIZE 64
+#define EASYSHELL_TOK_DELIM " \t\r\n\a"
 
 char *prompt = "easyshell> ";
 
@@ -23,9 +22,6 @@ char *easyshell_read_line(void)
 
 	return input;
 }
-
-#define EASYSHELL_TOK_BUFSIZE 64
-#define EASYSHELL_TOK_DELIM " \t\r\n\a"
 
 char **easyshell_split_line(char *line)
 {
@@ -56,49 +52,9 @@ char **easyshell_split_line(char *line)
 
 		token = strtok(NULL, EASYSHELL_TOK_DELIM);
 	}
+
 	tokens[position] = NULL;
 	return tokens;
-}
-
-int easyshell_launch(char **args)
-{
-	pid_t pid;
-	int status;
-
-	pid = fork();
-
-	if (pid == 0) {
-		if (execvp(args[0], args) == -1) {
-			perror("easyshell");
-		}
-		exit(EXIT_FAILURE);
-	} else if (pid < 0) {
-		perror("easyshell");
-	} else {
-		do {
-			waitpid(pid, &status, WUNTRACED);
-		} while (!WIFEXITED(status) && !WIFSIGNALED(status));
-	}
-
-	return 1;
-}
-
-int easyshell_execute(char **args)
-{
-	int i;
-
-	if (args[0] == NULL) {
-		// Empty command was entered.
-		return 1;
-	}
-
-	for(i = 0; i < easyshell_num_builtins(); i++) {
-		if (strcmp(args[0], builtin_str[i]) == 0) {
-			return (*builtin_func[i])(args);
-		}
-	}
-
-	return easyshell_launch(args);
 }
 
 void easyshell_loop(void)
@@ -112,8 +68,14 @@ void easyshell_loop(void)
 		args = easyshell_split_line(line);
 		status = easyshell_execute(args);
 
+		if (status < 0) {
+			if (strcmp(line, "") == 0) goto free_line;
+			fprintf(stderr, "cmd not found, try help\n");
+		}
+
+free_line:
 		free(line);
 		free(args);
 
-	}while(status);
+	} while(status);
 }

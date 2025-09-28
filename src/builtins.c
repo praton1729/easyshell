@@ -2,6 +2,7 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #define version 0.1
 
@@ -28,22 +29,19 @@ int easyshell_num_builtins()
 
 int easyshell_version(char **args)
 {
-	printf("Version info: %.1f\n", version);
+	fprintf(stdout, "Version info: %.1f\n", version);
 	return 1;
 }
 
 int easyshell_help(char **args)
 {
-	int i;
-	printf("Welcome to easyshell!!\n\n");
-	printf("Type program names and arguments, and hit enter.\n");
-	printf("The following are the builtins:\n\n");
+	fprintf(stdout, "Welcome to easyshell!\n");
+	fprintf(stdout, "The following commands are builtin:\n");
 
-	for(i = 0; i < easyshell_num_builtins(); i++) {
-		printf(" %s\n", builtin_str[i]);
+	for(int i = 0; i < easyshell_num_builtins(); i++) {
+		fprintf(stdout, "\t%s\n", builtin_str[i]);
 	}
 
-	printf("\nUse the man command for information on other programs. \n");
 	return 1;
 }
 
@@ -52,3 +50,22 @@ int easyshell_exit(char **args)
 	exit(EXIT_SUCCESS);
 	return 0;
 }
+
+int easyshell_execute(char **args)
+{
+	int i;
+
+	if (args[0] == NULL) {
+		// Empty command was entered.
+		return -1;
+	}
+
+	for(i = 0; i < easyshell_num_builtins(); i++) {
+		if (strcmp(args[0], builtin_str[i]) == 0) {
+			return (*builtin_func[i])(args);
+		}
+	}
+
+	return -1;
+}
+
