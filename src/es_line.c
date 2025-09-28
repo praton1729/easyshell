@@ -10,12 +10,12 @@
 
 #include <es_builtins.h>
 
-#define EASYSHELL_TOK_BUFSIZE 64
-#define EASYSHELL_TOK_DELIM " \t\r\n\a"
+#define ES_TOK_BUFSIZE 64
+#define ES_TOK_DELIM " \t\r\n\a"
 
 char *prompt = "easyshell> ";
 
-char *easyshell_read_line(void)
+char *es_read_line(void)
 {
 	char* input = readline(prompt);
 	add_history(input);
@@ -23,9 +23,9 @@ char *easyshell_read_line(void)
 	return input;
 }
 
-char **easyshell_split_line(char *line)
+char **es_split_line(char *line)
 {
-	int bufsize = EASYSHELL_TOK_BUFSIZE;
+	int bufsize = ES_TOK_BUFSIZE;
 	int position = 0;
 	char **tokens = malloc(sizeof(char*) * bufsize);
 	char *token;
@@ -35,14 +35,14 @@ char **easyshell_split_line(char *line)
 		exit(EXIT_FAILURE);
 	}
 
-	token = strtok(line, EASYSHELL_TOK_DELIM);
+	token = strtok(line, ES_TOK_DELIM);
 
 	while(token != NULL) {
 		tokens[position] = token;
 		position++;
 
 		if(position >= bufsize) {
-			bufsize += EASYSHELL_TOK_BUFSIZE;
+			bufsize += ES_TOK_BUFSIZE;
 			tokens = realloc(tokens, bufsize * sizeof(char*));
 			if (!tokens) {
 				fprintf(stderr, "easyshell: tokens reallocation failure\n");
@@ -50,7 +50,7 @@ char **easyshell_split_line(char *line)
 			}
 		}
 
-		token = strtok(NULL, EASYSHELL_TOK_DELIM);
+		token = strtok(NULL, ES_TOK_DELIM);
 	}
 
 	tokens[position] = NULL;

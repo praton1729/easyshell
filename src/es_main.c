@@ -5,16 +5,16 @@
 #include <es_line.h>
 #include <es_builtins.h>
 
-void easyshell_loop(void)
+void es_loop(void)
 {
 	char *line;
 	char **args;
 	int status;
 
 	do {
-		line = easyshell_read_line();
-		args = easyshell_split_line(line);
-		status = easyshell_execute(args);
+		line = es_read_line();
+		args = es_split_line(line);
+		status = es_execute(args);
 
 		if (status < 0) {
 			if (strcmp(line, "") == 0) goto free_line;
@@ -30,6 +30,6 @@ free_line:
 
 int main(int argc, char **argv)
 {
-	easyshell_loop();
+	es_loop();
 	return EXIT_SUCCESS;
 }
