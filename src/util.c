@@ -62,7 +62,7 @@ char **easyshell_split_line(char *line)
 
 int easyshell_launch(char **args)
 {
-	pid_t pid, wpid;
+	pid_t pid;
 	int status;
 
 	pid = fork();
@@ -76,7 +76,7 @@ int easyshell_launch(char **args)
 		perror("easyshell");
 	} else {
 		do {
-			wpid = waitpid(pid, &status, WUNTRACED);
+			waitpid(pid, &status, WUNTRACED);
 		} while (!WIFEXITED(status) && !WIFSIGNALED(status));
 	}
 
