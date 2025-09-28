@@ -5,7 +5,6 @@
 #include <unistd.h>
 #include <readline/readline.h>
 #include <readline/history.h>
-#include <es_builtins.h>
 #include <es_log.h>
 
 #define ES_TOK_BUFSIZE 64

@@ -3,69 +3,55 @@
 #include <stdlib.h>
 #include <string.h>
 #include <es_log.h>
+#include <es_builtins.h>
+#include <es_help.h>
+#include <es_version.h>
+#include <es_exit.h>
 
-#define version 0.1
-
-int es_help(char **args);
-int es_exit(char **args);
-int es_version(char **args);
-
-char *builtin_str[] = {
-	"help",
-	"version",
-	"exit"
+struct es_cmd {
+	char *cmd_name;
+	int (*cmd_handler)(char **arg);
 };
 
-int (*builtin_func[]) (char **) = {
-	&es_help,
-	&es_version,
-	&es_exit
-};
-
-int es_num_builtins()
-{
-	return sizeof(builtin_str) / sizeof(char*);
-}
-
-int es_version(char **args)
-{
-	es_print("Version info: %.1f\n", version);
-	return 1;
-}
-
-int es_help(char **args)
-{
-	es_print("Easyshell, a simple bootstrappable shell\n");
-	es_print("The following commands are builtin:\n");
-
-	for(int i = 0; i < es_num_builtins(); i++) {
-		es_print("\t%s\n", builtin_str[i]);
+#define DECLARE_CMD(name, handler) \
+	{                          \
+	.cmd_name = name,          \
+	.cmd_handler = handler     \
 	}
 
-	return 1;
-}
+#define DECLARE_END DECLARE_CMD(NULL, NULL)
 
-int es_exit(char **args)
+struct es_cmd cmd_list[] = {
+	DECLARE_CMD("help", &es_help),
+	DECLARE_CMD("version", &es_version),
+	DECLARE_CMD("exit", &es_exit),
+	DECLARE_END
+};
+
+void es_print_builtins()
 {
-	exit(EXIT_SUCCESS);
-	return 0;
+	struct es_cmd *cmd = cmd_list;
+
+	while(cmd->cmd_name) {
+		es_print("\t%s\n", cmd->cmd_name);
+		cmd++;
+	}
 }
 
 int es_execute(char **args)
 {
-	int i;
+	struct es_cmd *cmd = cmd_list;
 
 	if (args[0] == NULL) {
 		// Empty command was entered.
 		return -1;
 	}
 
-	for(i = 0; i < es_num_builtins(); i++) {
-		if (strcmp(args[0], builtin_str[i]) == 0) {
-			return (*builtin_func[i])(args);
-		}
+	while(cmd->cmd_name) {
+		if (strcmp(args[0], cmd->cmd_name) == 0)
+			return cmd->cmd_handler(args);
+		cmd++;
 	}
 
 	return -1;
 }
-
