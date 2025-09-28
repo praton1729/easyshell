@@ -4,19 +4,7 @@
 #include <es_help.h>
 #include <es_version.h>
 #include <es_exit.h>
-
-struct es_cmd {
-	char *cmd_name;
-	int (*cmd_handler)(char **arg);
-};
-
-#define DECLARE_CMD(name, handler) \
-	{                          \
-	.cmd_name = name,          \
-	.cmd_handler = handler     \
-	}
-
-#define DECLARE_END DECLARE_CMD(NULL, NULL)
+#include <es_builtins_internal.h>
 
 struct es_cmd cmd_list[] = {
 	DECLARE_CMD("help", &es_help),
