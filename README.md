@@ -1,7 +1,8 @@
 # EasyShell
 
 EasyShell is a lightweight shell implementation designed to be embedded into
-any CLI application as a bootstrapping layer.
+any CLI application as a bootstrapping layer. It is extendable with user-defined commands and
+supports some basic built-in commands.
 
 ## Requirements
 
